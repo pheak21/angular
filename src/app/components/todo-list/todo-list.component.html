@@ -1,1 +1,17 @@
-<p>todo-list works!</p>
+<div class="todo-container">
+  <h2>Todo List</h2>
+  <input
+    type="text"
+    placeholder="Add todo"
+    [(ngModel)]="newTodo"
+    (keyup.enter)="addTodo()"
+  />
+  <button (click)="addTodo()">Add</button>
+
+  <ul>
+    <li *ngFor="let todo of todos; let i = index">
+      {{ todo }}
+      <button (click)="deleteTodo(i)">Delete</button>
+    </li>
+  </ul>
+</div>

@@ -70,6 +70,7 @@ typings/
 .settings/
 *.sublime-workspace
 .vscode/*/**
+.angular
 
 # IDE - VSCode
 .vscode/*
