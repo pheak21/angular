@@ -1,0 +1,15 @@
+<div class="form-login">
+    <div class="form" [ngClass]="{'register': isSignUp}">
+        <div class="form-title">
+            <h1>{{title}}</h1>
+        </div>
+        <div class="form-submit">
+            <input [(ngModel)]="phone" type="text" name="phone" placeholder="Phone Number"/>
+            <p *ngIf="!isSignUp">If you don't have any acc please <span (click)="register()">Register</span></p>
+            <select *ngIf="isSignUp" #selectRule (change)="getRule(selectRule.value)">
+                <option *ngFor="let item of option; index as i" [value]="item" [disabled]="i == 0">{{item}}</option>
+            </select>
+            <button (click)="submit()">{{btnText}}</button>
+        </div>
+    </div>
+</div>
