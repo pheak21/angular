@@ -8,8 +8,8 @@ import { Todo } from "../../interface/todo";
   styleUrls: ["./todo-list.component.css"],
 })
 export class TodoListComponent implements OnInit {
-  todos: string[] = [];
-  newTodo: string = "";
+  todos: Todo[] = [];
+  newTodoTitle: string = '';
 
   constructor(private todoService: TodoService) {}
 
@@ -18,15 +18,20 @@ export class TodoListComponent implements OnInit {
   }
 
   addTodo(): void {
-    if (this.newTodo.trim()) {
-      this.todoService.addTodo(this.newTodo.trim());
-      this.newTodo = "";
-      this.todos = this.todoService.getTodos(); // Update todos
+    if (this.newTodoTitle.trim()) {
+      this.todoService.addTodo(this.newTodoTitle.trim());
+      this.newTodoTitle = '';
     }
   }
 
-  deleteTodo(index: number): void {
-    this.todoService.deleteTodo(index);
-    this.todos = this.todoService.getTodos(); // Update todos
+  editTodo(todo: Todo): void {
+    todo.editing = !todo.editing;
+    if (!todo.editing) {
+      this.todoService.editTodo(todo);
+    }
+  }
+
+  deleteTodo(id: number): void {
+    this.todoService.deleteTodo(id);
   }
 }

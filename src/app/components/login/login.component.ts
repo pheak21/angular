@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +8,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -70,10 +71,22 @@ export class LoginComponent implements OnInit {
       if(user.length !== 0 && this.phone){
         const existingItem = user.find((item:any) => item.phone === this.phone)
         if (existingItem) {
-          this.changed.emit(existingItem)
+          this.changed.emit(existingItem);
+          
+          this.authService.login(existingItem.rule).subscribe(success => {
+            if (success) {
+              console.log('Login successful');
+            } else {
+              console.log('Login failed');
+            }
+          });
         }
       }
     }
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }

@@ -1,4 +1,6 @@
 <div id="app">
   <app-login *ngIf="!isLogin" (changed)="getLogin($event)"></app-login>
   <app-todo-list *ngIf="isLogin"></app-todo-list>
+  <!-- <app-flex></app-flex>
+  <app-grid></app-grid> -->
 </div>

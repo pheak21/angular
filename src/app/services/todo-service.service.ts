@@ -5,21 +5,31 @@ import { Todo } from '../interface/todo';
   providedIn: 'root'
 })
 export class TodoService {
-  private todos: string[] = [];
+  private todos: Todo[] = [
+    { id: 1, title: 'Learn Angular', completed: false },
+    { id: 2, title: 'Build a todo app', completed: true }
+  ];
+  private nextId: number = 3; // Track the next available ID
 
-  constructor() { }
+  constructor() {}
 
-  getTodos(): string[] {
+  getTodos(): Todo[] {
     return this.todos;
   }
 
-  addTodo(todo: string): void {
-    this.todos.push(todo);
+  addTodo(title: string): void {
+    const newTodo: Todo = { id: this.nextId++, title, completed: false };
+    this.todos.push(newTodo);
   }
 
-  deleteTodo(index: number): void {
-    if (index >= 0 && index < this.todos.length) {
-      this.todos.splice(index, 1);
+  editTodo(todo: Todo): void {
+    const index = this.todos.findIndex(t => t.id === todo.id);
+    if (index !== -1) {
+      this.todos[index] = todo;
     }
+  }
+
+  deleteTodo(id: number): void {
+    this.todos = this.todos.filter(todo => todo.id !== id);
   }
 }
