@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text {
+  margin-right: 10px; 
+}
+
+.checkbox {
+  margin-left: auto;
+}
+
+.example-full-width {
+    width: 100%;
+  }

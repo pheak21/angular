@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { ShareModule } from './share/share.module';
-import { TestsModule } from './tests/tests.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { TestsModule } from './tests/tests.module';
   imports: [
     BrowserModule,
     ShareModule,
-    TestsModule
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
