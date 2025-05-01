@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
+
+  @Output() changed = new EventEmitter<number>()
 
   title: string = 'Login';
 
@@ -37,6 +40,19 @@ export class LoginComponent implements OnInit {
     this.btnText = 'Sign Up';
   }
 
+  getCheckUser(data: any){
+    const user = JSON.parse(localStorage.getItem('user')??'[]');
+    if(user){
+      const existingItem = user.find((item:any) => item.phone === data?.phone)
+      if (!existingItem) {
+        user.push(data)
+      }
+    } else {
+      user.push(data)
+    }
+    localStorage.setItem('user', JSON.stringify(user))
+  }
+
   getRule(rule: string){
    this.registerUser.rule = rule;
   }
@@ -45,17 +61,32 @@ export class LoginComponent implements OnInit {
     if(this.isSignUp){
       this.registerUser.phone = this.phone
       if(this.registerUser.phone && this.registerUser.rule){
-        localStorage.setItem('user', JSON.stringify(this.registerUser))
+        this.getCheckUser(this.registerUser);
         this.isSignUp = false;
         this.title = 'Login';
         this.btnText = 'Sign In';
       }
     } else {
-      const user = JSON.parse(localStorage.getItem('user')??'{}');
-      if(Object.keys(user).length !== 0){
-        
+      const user = JSON.parse(localStorage.getItem('user')??'[]');
+      if(user.length !== 0 && this.phone){
+        const existingItem = user.find((item:any) => item.phone === this.phone)
+        if (existingItem) {
+          this.changed.emit(existingItem);
+          
+          this.authService.login(existingItem.rule).subscribe(success => {
+            if (success) {
+              console.log('Login successful');
+            } else {
+              console.log('Login failed');
+            }
+          });
+        }
       }
     }
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }
